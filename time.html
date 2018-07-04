@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>js实现倒计时</title>
+</head>
+
+<body>
+    <!-- 
+        setTimeout 和 setIntervalde 区别
+            一种是每隔一定时间重新执行一次，循环往复，（setIntervalde）
+            一种是过了一定时间执行一次，此时并不是从新开始执行的，是从当下状态开始执行（setTimeout）
+    -->
+
+
+    <div id="timer"></div>
+    <div id="countDown"></div>
+
+    <script language="javascript" type="text/javascript">
+        // 动态化获取时间
+        function leftTimer() {
+            // 获取当前时间
+            let date = new Date();
+            // 对当前时间进行格式化
+            let year = date.getFullYear();
+            let month = date.getMonth() + 1;
+            let day = date.getDate();
+            let hour = date.getHours();
+            let minutes = date.getMinutes();
+            let sec = date.getSeconds();
+            let nowDay = year + '年' + month + '月' + day + '日' + hour + '时' + minutes + '分' + sec + '秒'
+            document.getElementById('timer').innerHTML = nowDay;
+        }
+        // 每隔1秒执行一次函数，实现动态化显示
+        setInterval("leftTimer()", 1000)
+        
+
+        // 倒计时
+        function showCountDown(year, month, day, hour, minute, divname) {
+            var now = new Date();
+            var endDate = new Date(year, month - 1, day, hour, minute);
+            var differTimer = endDate.getTime() - now.getTime();
+            var d, h, m, s;
+            if (differTimer >= 0) {
+                d = Math.floor(differTimer / 1000 / 60 / 60 / 24);
+                h = Math.floor(differTimer / 1000 / 60 / 60 % 24);
+                m = Math.floor(differTimer / 1000 / 60 % 60);
+                s = Math.floor(differTimer / 1000 % 60);
+                document.getElementById('countDown').innerHTML = checkTime(d) + '天' + checkTime(h) + '时' + checkTime(m) +
+                    '分' + checkTime(s) + '秒'
+            }
+        }
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+        setInterval("showCountDown(2018,8,15,0,0,0)", 1000)
+    </script>
+    <!-- 60秒倒计时 -->
+    <input type="button" id="btn" value="获取验证码">
+    <script>
+        //  方法一
+        var wait = 60;
+        // var el = document.getElementById('btn');
+        function time(el) {
+            if (wait == 0) {
+                el.removeAttribute("disabled")
+                el.value = '免费获取验证码';
+                wait = 60;
+            } else {
+                el.setAttribute("disabled", true);
+                el.value = "重新发送（" + wait + ")";
+                wait--;
+
+                setTimeout(function () {
+                    time(el)
+                }, 1000)
+            }
+        }
+        document.getElementById('btn').onclick = function () {
+            time(this)
+        };
+    </script>
+</body>
+
+</html>
